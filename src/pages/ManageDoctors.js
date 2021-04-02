@@ -42,7 +42,6 @@ const tableIcons = {
 export default function ManageUsers() {
 
   const [columns, setColumns] = useState([
-    { title: 'id', field: '_id' },
     { title: 'Full Name', field: 'fullname' },
     { title: 'Email', field: 'email'},
     { title: 'Birth Year', field: 'birthyear', type: 'numeric'},
@@ -63,7 +62,7 @@ export default function ManageUsers() {
   return (
     <MaterialTable
       icons={tableIcons}
-      title="Editable Preview"
+      title="Manage doctors"
       columns={columns}
       data={data}
       editable={{

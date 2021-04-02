@@ -42,34 +42,53 @@ const tableIcons = {
 export default function ManageUsers() {
 
   const [columns, setColumns] = useState([
-    { title: 'Full Name', field: 'fullname' },
-    { title: 'Email', field: 'email'},
-    { title: 'Date Birth', field: 'date'},
-    { title: 'Address', field: 'address'},
-    { title: 'Phone', field: 'phone'},
-    { title: 'Gender', field: 'gender'},
+    { title: 'Date', field: 'date' },
+    { title: 'Begin', field: 'begin'},
+    { title: "Doctor name", field: 'doctorname'},
+    { title: "User name", field: 'username'},
+    { title: 'Services', field: 'service'},
+    { title: 'Note', field: 'note'},
+    { title: 'Status', field: 'status', lookup: { 0: 'Not examined yet', 1: 'Examined' }},
   ]);
 
   const [data, setData] = useState([]);
 
+  const handleService = (ser) => {
+        let string = ''
+        if(ser.indexOf(0) != -1){
+            string += 'Tooth extraction,'
+        } 
+        if(ser.indexOf(1) != -1){
+            string += 'Fillings,'
+        } 
+        if(ser.indexOf(2) != -1){
+            string += 'Dental implant,'
+        }  
+        string = string.substring(0, string.length - 1)
+        return string
+  }
+
   useEffect(() => {
-      axios.get('http://localhost:8080/users/getallusers')
+      axios.get('http://localhost:8080/schedules/getallschedules')
       .then(res => {
           let dataFilter = res.data.map(dt => {
               return {
                   ...dt,
-                  date: (new Date(dt.date)).toString().slice(3,15),
-                  address: dt.address.street + ', ' + dt.address.ward + ', ' + dt.address.district + ', ' + dt.address.city
+                  doctorname: dt.doctorId.fullname,
+                  username : dt.userId.fullname,
+                  date: (new Date(dt.date)).toString().slice(0,15),
+                  begin: dt.begin + 'h',
+                  service: handleService(dt.services),
               }
           })
-          setData(dataFilter)
+          setData(dataFilter);
       })
   },[])
 
   return (
     <MaterialTable
       icons={tableIcons}
-      title="Manage users"
+      title="Manage schedules"
       columns={columns}
       data={data}
       editable={{
@@ -80,7 +99,6 @@ export default function ManageUsers() {
               const index = oldData.tableData.id;
               dataUpdate[index] = newData;
               setData([...dataUpdate]);
-
               resolve();
             }, 1000)
           }),

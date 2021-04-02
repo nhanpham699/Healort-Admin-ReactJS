@@ -63,6 +63,9 @@ function ResponsiveDrawer(props) {
           case 1:
             props.history.push('/doctors')  
             break
+          case 2:
+            props.history.push('/schedules')  
+            break
       }
   }
 
