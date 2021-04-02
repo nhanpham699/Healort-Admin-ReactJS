@@ -73,25 +73,14 @@ export default function ManageUsers() {
       columns={columns}
       data={data}
       editable={{
-        onRowUpdate: (newData, oldData) =>
-          new Promise((resolve, reject) => {
-            setTimeout(() => {
-              const dataUpdate = [...data];
-              const index = oldData.tableData.id;
-              dataUpdate[index] = newData;
-              setData([...dataUpdate]);
-
-              resolve();
-            }, 1000)
-          }),
         onRowDelete: oldData =>
           new Promise((resolve, reject) => {
             setTimeout(() => {
               const dataDelete = [...data];
               const index = oldData.tableData.id;
+              axios.post('http://localhost:8080/users/delete', {_id: dataDelete[index]})
               dataDelete.splice(index, 1);
               setData([...dataDelete]);
-              
               resolve()
             }, 1000)
           }),

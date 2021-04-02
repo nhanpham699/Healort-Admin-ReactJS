@@ -69,9 +69,11 @@ export default function ManageUsers() {
   }
 
   useEffect(() => {
+      
       axios.get('http://localhost:8080/schedules/getallschedules')
       .then(res => {
-          let dataFilter = res.data.map(dt => {
+          console.log(res.data);
+          const dataFilter = res.data.map(dt => {
               return {
                   ...dt,
                   doctorname: dt.doctorId.fullname,
@@ -81,6 +83,7 @@ export default function ManageUsers() {
                   service: handleService(dt.services),
               }
           })
+         
           setData(dataFilter);
       })
   },[])
@@ -91,29 +94,6 @@ export default function ManageUsers() {
       title="Manage schedules"
       columns={columns}
       data={data}
-      editable={{
-        onRowUpdate: (newData, oldData) =>
-          new Promise((resolve, reject) => {
-            setTimeout(() => {
-              const dataUpdate = [...data];
-              const index = oldData.tableData.id;
-              dataUpdate[index] = newData;
-              setData([...dataUpdate]);
-              resolve();
-            }, 1000)
-          }),
-        onRowDelete: oldData =>
-          new Promise((resolve, reject) => {
-            setTimeout(() => {
-              const dataDelete = [...data];
-              const index = oldData.tableData.id;
-              dataDelete.splice(index, 1);
-              setData([...dataDelete]);
-              
-              resolve()
-            }, 1000)
-          }),
-      }}
     />
   )
 }

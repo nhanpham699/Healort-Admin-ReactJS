@@ -91,8 +91,10 @@ export default function ManageUsers() {
             setTimeout(() => {
               const dataDelete = [...data];
               const index = oldData.tableData.id;
+              axios.post('http://localhost:8080/doctors/delete', {_id: dataDelete[index]})
               dataDelete.splice(index, 1);
               setData([...dataDelete]); 
+              console.log(dataDelete)
               resolve()
             }, 1000)
           }),
