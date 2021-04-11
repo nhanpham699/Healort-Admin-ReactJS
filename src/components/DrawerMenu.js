@@ -66,6 +66,12 @@ function ResponsiveDrawer(props) {
           case 2:
             props.history.push('/schedules')  
             break
+          case 3:
+            props.history.push('/medicines')  
+            break
+          case 4:
+            props.history.push('/equipments')  
+            break
       }
   }
 
@@ -74,7 +80,7 @@ function ResponsiveDrawer(props) {
       <div className={classes.toolbar} />
       <Divider />
       <List>
-        {['Manage Users', 'Manage Doctors ', 'Manage Schedules', 'Statistic'].map((text, index) => (
+        {['Manage Users', 'Manage Doctors ', 'Manage Schedules', 'Manage Medicines', 'Manage Equipments', 'Statistic'].map((text, index) => (
           <ListItem onClick={() => handleLink(index)} button key={text}>
             <ListItemText primary={text} />
           </ListItem>

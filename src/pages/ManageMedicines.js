@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import MaterialTable from 'material-table'
 import { forwardRef } from 'react';
-import Button from '@material-ui/core/Button';
 
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -19,7 +18,6 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import axios from 'axios'
-import DoctorModal from '../components/addDoctorModal'
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -41,71 +39,66 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
 
-export default function ManageDoctors() {
-
-  const [open, setOpen] = React.useState(false);
-
-  const handleOpen = () => {
-    setOpen(!open);
-  };
-  
+export default function ManageMedicines() {
 
   const [columns, setColumns] = useState([
-    { title: 'Full Name', field: 'fullname' },
-    { title: 'Email', field: 'email'},
-    { title: 'Birth Year', field: 'birthyear', type: 'numeric'},
-    { title: 'Hometown', field: 'hometown'},
-    { title: 'Phone', field: 'phone'},
-    { title: 'Gender', field: 'gender', lookup: { 0: 'Male', 1: 'Female' },},
+    { title: 'Name', field: 'name' },
+    { title: 'Quantity', field: 'quantity'},
+    { title: 'Type', field: 'type'},
+    { title: 'Price', field: 'price'},
+    { title: 'Seller', field: 'seller'},
+    { title: 'Date', field: 'date'},
   ]);
 
   const [data, setData] = useState([]);
 
   useEffect(() => {
-      axios.get('http://localhost:8080/doctors/getalldoctors')
+      axios.get('http://localhost:8080/medicines/getallmedicines')
       .then(res => {
          setData(res.data)
       })
   },[])
 
   return (
-    <div>
-        <DoctorModal open={open} handleOpen={handleOpen} />
-        <Button style={{position: 'absolute', zIndex: 2133, right: 360, top: 20, height: 30 }} 
-        variant="contained" 
-        color="primary"
-        onClick={handleOpen}>add</Button>
-        <MaterialTable
-        icons={tableIcons}
-        title="Manage doctors"
-        columns={columns}
-        data={data}
-        editable={{
-          onRowUpdate: (newData, oldData) =>
+    <MaterialTable
+      icons={tableIcons}
+      title="Manage doctors"
+      columns={columns}
+      data={data}
+      editable={{
+        onRowAdd: newData =>
             new Promise((resolve, reject) => {
-              setTimeout(() => {
-                const dataUpdate = [...data];
-                const index = oldData.tableData.id;
-                dataUpdate[index] = newData;
-                setData([...dataUpdate]);
-                axios.post('http://localhost:8080/doctors/update', newData)
-                resolve();
-              }, 1000)
+                setTimeout(() => {
+                    setData([...data, newData]); 
+                    newData = {...newData, password: '12345'}
+                    axios.post('http://localhost:8080/medicines/add', newData)
+                    resolve();
+                }, 1000);
             }),
-          onRowDelete: oldData =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                const dataDelete = [...data];
-                const index = oldData.tableData.id;
-                axios.post('http://localhost:8080/doctors/delete', {_id: dataDelete[index]})
-                dataDelete.splice(index, 1);
-                setData([...dataDelete]); 
-                console.log(dataDelete)
-                resolve()
-              }, 1000)
-            }),
-        }}
-      />
-    </div>
+        onRowUpdate: (newData, oldData) =>
+          new Promise((resolve, reject) => {
+            setTimeout(() => {
+              const dataUpdate = [...data];
+              const index = oldData.tableData.id;
+              dataUpdate[index] = newData;
+              setData([...dataUpdate]);
+              axios.post('http://localhost:8080/medicines/update', newData)
+              resolve();
+            }, 1000)
+          }),
+        onRowDelete: oldData =>
+          new Promise((resolve, reject) => {
+            setTimeout(() => {
+              const dataDelete = [...data];
+              const index = oldData.tableData.id;
+              axios.post('http://localhost:8080/medicines/delete', {_id: dataDelete[index]})
+              dataDelete.splice(index, 1);
+              setData([...dataDelete]); 
+              console.log(dataDelete)
+              resolve()
+            }, 1000)
+          }),
+      }}
+    />
   )
 }
