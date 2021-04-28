@@ -44,6 +44,37 @@ const tableIcons = {
 export default function ManageDoctors() {
 
   const [open, setOpen] = React.useState(false);
+  const years = {
+    2: '2 years',
+    3: '3 years',
+    4: '4 years',
+    5: '5 years',
+    6: '6 years',
+    7: '7 years',
+    8: '8 years',
+    9: '9 years',
+    10: '10 years',
+    11: '11 years',
+    12: '12 years',
+    13: '13 years',
+    14: '14 years',
+    15: '15 years',
+    16: '16 years',
+    17: '17 years',
+    18: '18 years',
+    19: '19 years',
+    20: '20 years',
+    21: '21 years',
+    22: '22 years',
+    23: '23 years',
+    24: '24 years',
+    25: '25 years',
+    26: '26 years',
+    27: '27 years',
+    28: '28 years',
+    29: '29 years',
+    30: '30 years'
+  }
 
   const handleOpen = () => {
     setOpen(!open);
@@ -56,17 +87,23 @@ export default function ManageDoctors() {
     { title: 'Birth Year', field: 'birthyear', type: 'numeric'},
     { title: 'Hometown', field: 'hometown'},
     { title: 'Phone', field: 'phone'},
-    { title: 'Gender', field: 'gender', lookup: { 0: 'Male', 1: 'Female' },},
+    { title: 'Gender', field: 'gender', lookup: { 0: 'Male', 1: 'Female' }},
+    { title: 'Experience', field: 'experience', lookup: years}
   ]);
 
   const [data, setData] = useState([]);
 
   useEffect(() => {
+      // for(let i=2; i; i++){
+      //     setYears({i: i + ' year'})
+      // }
       axios.get('http://localhost:8080/doctors/getalldoctors')
       .then(res => {
          setData(res.data)
       })
   },[])
+
+  // console.log(years);
 
   return (
     <div>

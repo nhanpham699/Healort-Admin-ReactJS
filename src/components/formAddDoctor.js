@@ -1,324 +1,103 @@
-import React from 'react';
-import { Form, Field } from 'react-final-form';
-import { TextField, Checkbox, Radio, Select } from 'final-form-material-ui';
-import {
-  Typography,
-  Paper,
-  Link,
-  Grid,
-  Button,
-  CssBaseline,
-  RadioGroup,
-  FormLabel,
-  MenuItem,
-  FormGroup,
-  FormControl,
-  FormControlLabel,
-} from '@material-ui/core';
-// Picker
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  TimePicker,
-  DatePicker,
-} from '@material-ui/pickers';
 
-function DatePickerWrapper(props) {
-  const {
-    input: { name, onChange, value, ...restInput },
-    meta,
-    ...rest
-  } = props;
-  const showError =
-    ((meta.submitError && !meta.dirtySinceLastSubmit) || meta.error) &&
-    meta.touched;
+import React, {useState, useRef} from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Modal from '@material-ui/core/Modal';
+import TextField from '@material-ui/core/TextField';
+import './addition.modal.css';
+import axios from 'axios';
 
-  return (
-    <DatePicker
-      {...rest}
-      name={name}
-      helperText={showError ? meta.error || meta.submitError : undefined}
-      error={showError}
-      inputProps={restInput}
-      onChange={onChange}
-      value={value === '' ? null : value}
-    />
-  );
+require('dotenv').config()
+
+const api = process.env.REACT_APP_API_KEY
+
+function getModalStyle() {
+  const top = 50 
+  const left = 50
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
 }
 
-function TimePickerWrapper(props) {
-  const {
-    input: { name, onChange, value, ...restInput },
-    meta,
-    ...rest
-  } = props;
-  const showError =
-    ((meta.submitError && !meta.dirtySinceLastSubmit) || meta.error) &&
-    meta.touched;
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+}));
 
-  return (
-    <TimePicker
-      {...rest}
-      name={name}
-      helperText={showError ? meta.error || meta.submitError : undefined}
-      error={showError}
-      inputProps={restInput}
-      onChange={onChange}
-      value={value === '' ? null : value}
-    />
+export default function AdditionModal(props) {
+  const classes = useStyles();
+  // getModalStyle is not a pure function, we roll the style only on the first render
+  const [modalStyle] = React.useState(getModalStyle);
+  const [file1, setFile1] = useState('');
+  const [file2, setFile2] = useState('');
+
+  const el = useRef();   
+  const addproduct = (e) => {
+        e.preventDefault();
+        const {name, price, type, color, num, description} = e.target;
+        const config = {     
+            headers: { 'content-type': 'multipart/form-data' }
+        }
+        var formData = new FormData();
+        formData.append('file1', file1) //appending file
+        formData.append('file2', file2) //appending file
+        formData.append('name', name.value)
+        formData.append('price', price.value)
+        formData.append('color', color.value)
+        formData.append('num', num.value)
+        formData.append('type', type.value)
+        formData.append('des', description.value)
+        // console.log(formData);
+        axios.post(api + "/addWareHouse", formData, config)
+        .then(res => {
+            console.log(res.data.add);
+        })
+  }
+
+  const handlleChange1 = (e) => {
+    const file1 = e.target.files[0]; //access file
+    setFile1(file1);
+  }
+  const handlleChange2 = (e) => {
+    const file2 = e.target.files[0]; //access file
+    setFile2(file2);
+  }
+
+  const body = (
+    <div style={modalStyle} className={classes.paper}>
+      <h2 id="simple-modal-title">Add product</h2>
+      <form onSubmit={addproduct} noValidate autoComplete="off">
+        <TextField name="name" className="add-input" label="Name" />
+        <TextField name="price" className="add-input" label="Price" />
+        <TextField name="type" className="add-input" label="Type" />
+        <TextField name="color" className="add-input" label="Color" />
+        <TextField name="num" className="add-input" label="Quantity" />
+        <TextField name="description" className="add-input" label="Description" />
+        <input ref={el} onChange={(e) => handlleChange1(e)} className="add-image-file" type="file" label="Image" />
+        <input ref={el} onChange={(e) => handlleChange2(e)} className="add-image-file" type="file" label="Image" />  
+        <button className="add-comfirm" type="submit">Comfirm</button>       
+       </form> 
+    </div>
   );
-}
-
-const onSubmit = async values => {
-  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-  await sleep(300);
-  window.alert(JSON.stringify(values, 0, 2));
-};
-const validate = values => {
-  const errors = {};
-  if (!values.firstName) {
-    errors.firstName = 'Required';
-  }
-  if (!values.lastName) {
-    errors.lastName = 'Required';
-  }
-  if (!values.email) {
-    errors.email = 'Required';
-  }
-  return errors;
-};
-
-export default function FormAddDoctor() {
+  const { open, handleClose } = props;  
   return (
-    <div style={{ padding: 16, margin: 'auto', maxWidth: 600 }}>
-      <CssBaseline />
-      <Typography variant="h4" align="center" component="h1" gutterBottom>
-        🏁 React Final Form
-      </Typography>
-      <Typography variant="h5" align="center" component="h2" gutterBottom>
-        Material-UI Example
-      </Typography>
-      <Typography paragraph>
-        <Link href="https://github.com/erikras/react-final-form#-react-final-form">
-          Read Docs
-        </Link>
-        . This example demonstrates using{' '}
-        <Link href="https://material-ui.com/demos/text-fields/">
-          Material-UI
-        </Link>{' '}
-        form controls.
-      </Typography>
-      <Form
-        onSubmit={onSubmit}
-        initialValues={{ employed: true, stooge: 'larry' }}
-        validate={validate}
-        render={({ handleSubmit, reset, submitting, pristine, values }) => (
-          <form onSubmit={handleSubmit} noValidate>
-            <Paper style={{ padding: 16 }}>
-              <Grid container alignItems="flex-start" spacing={2}>
-                <Grid item xs={6}>
-                  <Field
-                    fullWidth
-                    required
-                    name="firstName"
-                    component={TextField}
-                    type="text"
-                    label="First Name"
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <Field
-                    fullWidth
-                    required
-                    name="lastName"
-                    component={TextField}
-                    type="text"
-                    label="Last Name"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Field
-                    name="email"
-                    fullWidth
-                    required
-                    component={TextField}
-                    type="email"
-                    label="Email"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <FormControlLabel
-                    label="Employed"
-                    control={
-                      <Field
-                        name="employed"
-                        component={Checkbox}
-                        type="checkbox"
-                      />
-                    }
-                  />
-                </Grid>
-                <Grid item>
-                  <FormControl component="fieldset">
-                    <FormLabel component="legend">Best Stooge</FormLabel>
-                    <RadioGroup row>
-                      <FormControlLabel
-                        label="Larry"
-                        control={
-                          <Field
-                            name="stooge"
-                            component={Radio}
-                            type="radio"
-                            value="larry"
-                          />
-                        }
-                      />
-                      <FormControlLabel
-                        label="Moe"
-                        control={
-                          <Field
-                            name="stooge"
-                            component={Radio}
-                            type="radio"
-                            value="moe"
-                          />
-                        }
-                      />
-                      <FormControlLabel
-                        label="Curly"
-                        control={
-                          <Field
-                            name="stooge"
-                            component={Radio}
-                            type="radio"
-                            value="curly"
-                          />
-                        }
-                      />
-                    </RadioGroup>
-                  </FormControl>
-                </Grid>
-                <Grid item>
-                  <FormControl component="fieldset">
-                    <FormLabel component="legend">Sauces</FormLabel>
-                    <FormGroup row>
-                      <FormControlLabel
-                        label="Ketchup"
-                        control={
-                          <Field
-                            name="sauces"
-                            component={Checkbox}
-                            type="checkbox"
-                            value="ketchup"
-                          />
-                        }
-                      />
-                      <FormControlLabel
-                        label="Mustard"
-                        control={
-                          <Field
-                            name="sauces"
-                            component={Checkbox}
-                            type="checkbox"
-                            value="mustard"
-                          />
-                        }
-                      />
-                      <FormControlLabel
-                        label="Salsa"
-                        control={
-                          <Field
-                            name="sauces"
-                            component={Checkbox}
-                            type="checkbox"
-                            value="salsa"
-                          />
-                        }
-                      />
-                      <FormControlLabel
-                        label="Guacamole 🥑"
-                        control={
-                          <Field
-                            name="sauces"
-                            component={Checkbox}
-                            type="checkbox"
-                            value="guacamole"
-                          />
-                        }
-                      />
-                    </FormGroup>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12}>
-                  <Field
-                    fullWidth
-                    name="notes"
-                    component={TextField}
-                    multiline
-                    label="Notes"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Field
-                    fullWidth
-                    name="city"
-                    component={Select}
-                    label="Select a City"
-                    formControlProps={{ fullWidth: true }}
-                  >
-                    <MenuItem value="London">London</MenuItem>
-                    <MenuItem value="Paris">Paris</MenuItem>
-                    <MenuItem value="Budapest">
-                      A city with a very long Name
-                    </MenuItem>
-                  </Field>
-                </Grid>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <Grid item xs={6}>
-                    <Field
-                      name="rendez-vous"
-                      component={DatePickerWrapper}
-                      fullWidth
-                      margin="normal"
-                      label="Rendez-vous"
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Field
-                      name="alarm"
-                      component={TimePickerWrapper}
-                      fullWidth
-                      margin="normal"
-                      label="Alarm"
-                    />
-                  </Grid>
-                </MuiPickersUtilsProvider>
-                <Grid item style={{ marginTop: 16 }}>
-                  <Button
-                    type="button"
-                    variant="contained"
-                    onClick={reset}
-                    disabled={submitting || pristine}
-                  >
-                    Reset
-                  </Button>
-                </Grid>
-                <Grid item style={{ marginTop: 16 }}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    disabled={submitting}
-                  >
-                    Submit
-                  </Button>
-                </Grid>
-              </Grid>
-            </Paper>
-            <pre>{JSON.stringify(values, 0, 2)}</pre>
-          </form>
-        )}
-      />
+    <div>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        {body}
+      </Modal>
     </div>
   );
 }
