@@ -66,7 +66,7 @@ export default function SimpleModal(props) {
         console.log(experience);
         var formData = new FormData();
         
-        formData.append('file', file) 
+        formData.append('photo', file) 
        
         formData.append('email', email.value)
         formData.append('fullname', fullname.value)
