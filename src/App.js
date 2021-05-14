@@ -1,28 +1,14 @@
-import './App.css';
-import DrawerMenu from './components/DrawerMenu'
-import ManageUsers from './pages/ManageUsers'
-import ManageDoctors from './pages/ManageDoctors'
-import ManageSchedules from './pages/ManageSchedules'
-import ManageMedicines from './pages/ManageMedicines'
-import ManageEquipments from './pages/ManageEquipments'
-
-
+import Login from './pages/login'
+import Home from './pages/home'
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"; 
-
 function App() {
   return (
     <Router>
       <div className="App">
-          <div className="left-content">
-            <DrawerMenu />
-          </div>
-          <div className="right-content">
-            <Route path='/users' component={ManageUsers} />
-            <Route path='/doctors' component={ManageDoctors} />
-            <Route path='/schedules' component={ManageSchedules} />
-            <Route path='/medicines' component={ManageMedicines} />
-            <Route path='/equipments' component={ManageEquipments} />
-          </div>
+        <Switch>
+            <Route path='/login' exact component={Login} />
+            <Route path='/' component={Home} />
+        </Switch>
       </div>
     </Router>
   );

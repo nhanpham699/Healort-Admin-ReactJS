@@ -108,7 +108,7 @@ export default function ManageDoctors() {
   return (
     <div>
         <DoctorModal open={open} handleOpen={handleOpen} />
-        <Button style={{position: 'absolute', zIndex: 2133, right: 360, top: 20, height: 30 }} 
+        <Button style={{position: 'absolute', zIndex: 2133, right: 360, top: 115, height: 30 }} 
         variant="contained" 
         color="primary"
         onClick={handleOpen}>add</Button>

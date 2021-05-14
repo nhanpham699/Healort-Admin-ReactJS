@@ -6,7 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
+import ScheduleIcon from '@material-ui/icons/Schedule';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -14,11 +14,13 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 const drawerWidth = 240;
+const cookies = new Cookies();
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,6 +57,11 @@ function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
 
+  const logout = () => {
+    cookies.remove('adminId', { path: '/' });
+    props.history.push('/login') 
+ }
+
   const handleLink = (index) => {
       switch(index){
           case 0:
@@ -70,8 +77,14 @@ function ResponsiveDrawer(props) {
             props.history.push('/medicines')  
             break
           case 4:
-            props.history.push('/equipments')  
+            props.history.push('/prescriptions')  
             break
+          case 5:
+            props.history.push('/revenuestatistic')  
+            break
+          case 6:
+            props.history.push('/doctorstatistic')  
+            break   
       }
   }
 
@@ -80,12 +93,21 @@ function ResponsiveDrawer(props) {
       <div className={classes.toolbar} />
       <Divider />
       <List>
-        {['Manage Users', 'Manage Doctors ', 'Manage Schedules', 'Manage Medicines', 'Manage Equipments', 'Statistic'].map((text, index) => (
+        {[
+          'Manage Users', 
+          'Manage Doctors ', 
+          'Manage Schedules', 
+          'Manage Medicines', 
+          'Manage Prescriptions', 
+          'Revenue Statistic',
+          'Doctors Statistic'
+         ].map((text, index) => (
           <ListItem onClick={() => handleLink(index)} button key={text}>
             <ListItemText primary={text} />
           </ListItem>
         ))}
-      </List>
+      </List> 
+      <div className="logout"><a onClick={logout}><i>Log out</i></a></div>
     </div>
   );
 

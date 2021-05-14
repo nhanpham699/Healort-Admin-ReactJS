@@ -42,66 +42,50 @@ const tableIcons = {
 export default function ManageMedicines() {
 
   const [columns, setColumns] = useState([
-    { title: 'Name', field: 'name' },
-    { title: 'Quantity', field: 'quantity'},
-    { title: 'Type', field: 'type'},
-    { title: 'Price', field: 'price'},
-    { title: 'Seller', field: 'seller'},
-    { title: 'Phone', field: 'phone'},
-    { title: 'Address', field: 'address'},
-    { title: 'Date', field: 'date'},
+    { title: 'Date', field: 'date' },
+    { title: 'Medicine', field: 'medicine'},
+    { title: 'Doctor', field: 'doctor'},
+    { title: 'Client', field: 'user'},
+    { title: 'Times', field: 'times'},
     { title: 'Note', field: 'note'},
+    { title: 'Total', field: 'total'},
   ]);
 
   const [data, setData] = useState([]);
 
+
+  const getMedicine = (arr) => {
+
+      let str = ""
+
+      for(let i of arr) {
+          str += i.name + " (" + i.quantity + "), "
+      }
+      str = str.slice(0, -1).slice(0, -1)
+      return str  
+  }
+
   useEffect(() => {
-      axios.get('http://localhost:8080/equipments/getallequipments')
+      axios.get('http://localhost:8080/prescriptions//getallprescriptions')
       .then(res => {
-         setData(res.data)
+        const newData = res.data.map(dt => {
+            return {...dt,
+                date: dt.date.slice(0,10),
+                medicine: getMedicine(dt.medicine),
+                doctor: dt.doctorId.fullname,
+                user: dt.userId.fullname
+            }
+        })
+        setData(newData)
       })
   },[])
 
   return (
     <MaterialTable
       icons={tableIcons}
-      title="Manage doctors"
+      title="Manage prescriptions"
       columns={columns}
       data={data}
-      editable={{
-        onRowAdd: newData =>
-            new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    setData([...data, newData]); 
-                    newData = {...newData, password: '12345'}
-                    axios.post('http://localhost:8080/equipments/add', newData)
-                    resolve();
-                }, 1000);
-            }),
-        onRowUpdate: (newData, oldData) =>
-          new Promise((resolve, reject) => {
-            setTimeout(() => {
-              const dataUpdate = [...data];
-              const index = oldData.tableData.id;
-              dataUpdate[index] = newData;
-              setData([...dataUpdate]);
-              axios.post('http://localhost:8080/equipments/update', newData)
-              resolve();
-            }, 1000)
-          }),
-        onRowDelete: oldData =>
-          new Promise((resolve, reject) => {
-            setTimeout(() => {
-              const dataDelete = [...data];
-              const index = oldData.tableData.id;
-              axios.post('http://localhost:8080/equipments/delete', {_id: dataDelete[index]})
-              dataDelete.splice(index, 1);
-              setData([...dataDelete]); 
-              console.log(dataDelete)
-              resolve()
-            }, 1000)
-          }),
-      }}
     />
   )
 }

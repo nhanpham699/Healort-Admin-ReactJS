@@ -5,3 +5,7 @@
 .add-input{
     width: 100%;
 }
+#simple-modal-title {
+    margin-top: 10px;
+    margin-right: 50px;
+}
