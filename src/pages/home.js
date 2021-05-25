@@ -3,8 +3,10 @@ import DrawerMenu from '../components/DrawerMenu'
 import ManageUsers from './ManageUsers'
 import ManageDoctors from './ManageDoctors'
 import ManageSchedules from './ManageSchedules'
+import ManageReexams from './ManageReexam'
 import ManageMedicines from './ManageMedicines'
 import ManagePrescriptions from './ManagePrescriptions'
+import ManageServices from './ManageServices'
 import DoctorStatistic from './DoctorStatistic'
 import RevenueStatistic from './RevenueStatistic'
 import Nav from '../components/Nav'
@@ -33,7 +35,9 @@ export default function Home() {
                     <Route path='/users' component={ManageUsers} />
                     <Route path='/doctors' component={ManageDoctors} />
                     <Route path='/schedules' component={ManageSchedules} />
+                    <Route path='/reexams' component={ManageReexams} />
                     <Route path='/medicines' component={ManageMedicines} />
+                    <Route path='/services' component={ManageServices} />
                     <Route path='/prescriptions' component={ManagePrescriptions} />
                     <Route path='/doctorstatistic' component={DoctorStatistic} />
                     <Route path='/revenuestatistic' component={RevenueStatistic} />

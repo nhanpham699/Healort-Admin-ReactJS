@@ -58,7 +58,7 @@ export default function ManageUsers() {
           let dataFilter = res.data.map(dt => {
               return {
                   ...dt,
-                  date: (new Date(dt.date)).toString().slice(3,15),
+                  date: (new Date(dt.date)).getDate() + '-' + ((new Date(dt.date)).getMonth()+1) + '-' + (new Date(dt.date)).getFullYear(),
                   address: dt.address.street + ', ' + dt.address.ward + ', ' + dt.address.district + ', ' + dt.address.city
               }
           })

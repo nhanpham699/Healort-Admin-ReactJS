@@ -45,42 +45,25 @@ export default function ManageUsers() {
     { title: 'Date', field: 'date' },
     { title: 'Begin', field: 'begin'},
     { title: "Doctor name", field: 'doctorname'},
-    { title: "User name", field: 'username'},
-    { title: 'Services', field: 'service'},
+    { title: "Client name", field: 'username'},
     { title: 'Note', field: 'note'},
-    { title: 'Status', field: 'status', lookup: { 0: 'Not examined yet', 1: 'Examined', 2: 'No comming', 3: 'Success' }},
+    { title: 'Status', field: 'status', lookup: { 0: 'Not examined yet', 1: 'Examined', 2: 'No comming' }},
   ]);
 
   const [data, setData] = useState([]);
 
-  const handleService = (ser) => {
-        let string = ''
-        if(ser.indexOf(0) != -1){
-            string += 'Tooth extraction,'
-        } 
-        if(ser.indexOf(1) != -1){
-            string += 'Fillings,'
-        } 
-        if(ser.indexOf(2) != -1){
-            string += 'Dental implant,'
-        }  
-        string = string.substring(0, string.length - 1)
-        return string
-  }
-
   useEffect(() => {
       
-      axios.get('http://localhost:8080/schedules/getallschedules')
+      axios.get('http://localhost:8080/reexams/getallreexams')
       .then(res => {
-          console.log(res.data);
+        //   console.log(res.data);
           const dataFilter = res.data.map(dt => {
               return {
                   ...dt,
                   doctorname: dt.doctorId.fullname,
                   username : dt.userId.fullname,
                   date: (new Date(dt.date)).getDate() + '-' + ((new Date(dt.date)).getMonth()+1) + '-' + (new Date(dt.date)).getFullYear(),
-                  begin: dt.begin + 'h',
-                  service: handleService(dt.services),
+                  begin: dt.begin + 'h'
               }
           })
          

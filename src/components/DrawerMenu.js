@@ -74,15 +74,21 @@ function ResponsiveDrawer(props) {
             props.history.push('/schedules')  
             break
           case 3:
-            props.history.push('/medicines')  
+            props.history.push('/reexams')  
             break
           case 4:
-            props.history.push('/prescriptions')  
+            props.history.push('/medicines')  
             break
           case 5:
+            props.history.push('/services')  
+            break  
+          case 6:
+            props.history.push('/prescriptions')  
+            break
+          case 7:
             props.history.push('/revenuestatistic')  
             break
-          case 6:
+          case 8:
             props.history.push('/doctorstatistic')  
             break   
       }
@@ -97,7 +103,9 @@ function ResponsiveDrawer(props) {
           'Manage Users', 
           'Manage Doctors ', 
           'Manage Schedules', 
+          'Manage Re-Exams', 
           'Manage Medicines', 
+          'Manage Services', 
           'Manage Prescriptions', 
           'Revenue Statistic',
           'Doctors Statistic'

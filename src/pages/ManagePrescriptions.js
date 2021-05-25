@@ -70,7 +70,7 @@ export default function ManageMedicines() {
       .then(res => {
         const newData = res.data.map(dt => {
             return {...dt,
-                date: dt.date.slice(0,10),
+                date: (new Date(dt.date)).getDate() + '-' + ((new Date(dt.date)).getMonth()+1) + '-' + (new Date(dt.date)).getFullYear(),
                 medicine: getMedicine(dt.medicine),
                 doctor: dt.doctorId.fullname,
                 user: dt.userId.fullname
