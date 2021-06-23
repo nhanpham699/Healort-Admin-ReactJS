@@ -43,6 +43,7 @@ export default function ManageMedicines() {
 
   const [columns, setColumns] = useState([
     { title: 'Date', field: 'date' },
+    { title: 'Disease', field: 'disease'},    
     { title: 'Medicine', field: 'medicine'},
     { title: 'Doctor', field: 'doctor'},
     { title: 'Client', field: 'user'},

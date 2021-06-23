@@ -88,7 +88,7 @@ export default function ManageDoctors() {
     { title: 'Hometown', field: 'hometown'},
     { title: 'Phone', field: 'phone'},
     { title: 'Gender', field: 'gender', lookup: { 0: 'Male', 1: 'Female' }},
-    { title: 'Experience', field: 'experience', lookup: years}
+    { title: 'Experience', field: 'experience', lookup: years},
   ]);
 
   const [data, setData] = useState([]);
@@ -117,6 +117,22 @@ export default function ManageDoctors() {
         title="Manage doctors"
         columns={columns}
         data={data}
+        detailPanel={[
+        {
+          tooltip: 'Show Name',
+          render: rowData => {
+            return (
+              <div
+                style={{
+                  fontSize: 15,
+                  padding: 30
+                }}
+              >
+                {rowData.description}
+              </div>
+            )
+          },
+        }]}
         editable={{
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve, reject) => {

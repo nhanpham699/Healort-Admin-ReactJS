@@ -7,6 +7,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import TextareaAutosize from '@material-ui/core/TextareaAutosize'
 
 
 import './addDoctorModal.css'
@@ -58,12 +59,12 @@ export default function SimpleModal(props) {
 
   const handleAddDoctor = (e) => {
         e.preventDefault();
-        const {email, fullname, hometown, phone, birthyear} = e.target;
+        const {email, fullname, hometown, phone, birthyear, description} = e.target;
         const config = {     
             headers: { 'content-type': 'multipart/form-data' }
         }
         
-        console.log(experience);
+        console.log(description.value);
         var formData = new FormData();
         
         formData.append('photo', file) 
@@ -75,6 +76,7 @@ export default function SimpleModal(props) {
         formData.append('phone', phone.value)
         formData.append('birthyear', birthyear.value)
         formData.append('experience', experience)
+        formData.append('description', description.value)
         
         axios.post("http://localhost:8080/doctors/signup", formData, config)
         .then(res => {
@@ -91,7 +93,7 @@ export default function SimpleModal(props) {
   const body = (
     <div style={modalStyle} className={classes.paper}>
     <h2 id="simple-modal-title">Add doctor</h2>
-    <form onSubmit={handleAddDoctor} noValidate autoComplete="off">
+    <form style={{maxHeight: 500, overflow: 'auto'}} onSubmit={handleAddDoctor} noValidate autoComplete="off">
       <TextField name="email" className="add-input" label="Email" />
       <TextField name="fullname" className="add-input" label="Full name" />
       <div>
@@ -120,6 +122,8 @@ export default function SimpleModal(props) {
         ))}  
         </Select>
       </div>
+      <p style={{color: 'gray', fontSize: 16, position: 'relative', top: 9}}>Description</p>
+      <TextareaAutosize name="description" aria-label="Description" placeholder="Description" rowsMin={3} />
       <input ref={el} onChange={(e) => handlleChange(e)} className="add-image-file" type="file" label="Image" />
       <button className="add-comfirm" type="submit">Comfirm</button>       
      </form> 

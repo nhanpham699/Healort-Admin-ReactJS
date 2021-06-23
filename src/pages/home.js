@@ -9,6 +9,7 @@ import ManagePrescriptions from './ManagePrescriptions'
 import ManageServices from './ManageServices'
 import DoctorStatistic from './DoctorStatistic'
 import RevenueStatistic from './RevenueStatistic'
+import ManageReview from './ManageReview'
 import Nav from '../components/Nav'
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"; 
 import Cookies from 'universal-cookie';
@@ -39,6 +40,7 @@ export default function Home() {
                     <Route path='/medicines' component={ManageMedicines} />
                     <Route path='/services' component={ManageServices} />
                     <Route path='/prescriptions' component={ManagePrescriptions} />
+                    <Route path='/reviews' component={ManageReview} />
                     <Route path='/doctorstatistic' component={DoctorStatistic} />
                     <Route path='/revenuestatistic' component={RevenueStatistic} />
                 </div>

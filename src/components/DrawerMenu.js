@@ -86,9 +86,12 @@ function ResponsiveDrawer(props) {
             props.history.push('/prescriptions')  
             break
           case 7:
+            props.history.push('/reviews')  
+            break 
+          case 8:
             props.history.push('/revenuestatistic')  
             break
-          case 8:
+          case 9:
             props.history.push('/doctorstatistic')  
             break   
       }
@@ -107,6 +110,7 @@ function ResponsiveDrawer(props) {
           'Manage Medicines', 
           'Manage Services', 
           'Manage Prescriptions', 
+          'Manage Review',
           'Revenue Statistic',
           'Doctors Statistic'
          ].map((text, index) => (

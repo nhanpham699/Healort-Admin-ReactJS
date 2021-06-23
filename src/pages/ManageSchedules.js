@@ -54,16 +54,10 @@ export default function ManageUsers() {
   const [data, setData] = useState([]);
 
   const handleService = (ser) => {
-        let string = ''
-        if(ser.indexOf(0) != -1){
-            string += 'Tooth extraction,'
+        let string = ""
+        for(let i of ser){
+            string += i.name + ','
         } 
-        if(ser.indexOf(1) != -1){
-            string += 'Fillings,'
-        } 
-        if(ser.indexOf(2) != -1){
-            string += 'Dental implant,'
-        }  
         string = string.substring(0, string.length - 1)
         return string
   }

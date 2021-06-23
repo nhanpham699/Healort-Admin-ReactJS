@@ -1,0 +1,79 @@
+.review-container {
+    display: flex;
+}
+.review-left, .review-right{
+    float: left;
+    max-height: 500px; 
+    overflow: auto;
+}
+.title{
+    text-align: center;
+}
+.review-right{
+    padding-left: 40px;
+    width: 90%;
+}
+.review-left{
+    width: 60%;
+    border-right: 0.3px solid silver;
+    padding: 0 40px;
+}
+.doctor-item:hover{
+    cursor: pointer;
+}
+.doctor-item{
+    background: #f2f2f2;
+    padding: 10px 0px 10px 20px;
+    border: 1px solid silver;
+    display: flex;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+.doctor-item-right{
+    margin-left: 20px;
+}
+.doctor-text{
+    line-height: 10px;
+}
+.doctor-avatar{
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+}
+.user-review{
+    display: flex;
+    width: 80%;
+}
+.user-item{
+    display: flex;
+    margin-top: 20px;
+}
+.user-item-right{
+    border-radius: 10px;
+    padding: 10px;
+    background: #f2f2f2;
+    margin-left: 20px;
+}
+.user-text{
+    line-height: 5px;
+}
+.user-avatar{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
+.user-hide{
+    width: 20%;
+    margin-top: 28px;
+}
+.hide-button:hover{
+    cursor: pointer;
+}
+.hide-button{
+    font-weight: bold;
+    width: 50px;
+    height: 25px;
+    border-radius: 4px;
+    border: 1px solid black;
+    background-color: #ff6666;      
+}

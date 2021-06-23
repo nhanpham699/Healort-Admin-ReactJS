@@ -57,8 +57,9 @@ export default function ManageMedicines() {
 
   return (
     <MaterialTable
+      style={{width: 700}}
       icons={tableIcons}
-      title="Manage medicines"
+      title="Manage services"
       columns={columns}
       data={data}
       editable={{

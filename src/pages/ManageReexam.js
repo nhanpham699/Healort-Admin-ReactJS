@@ -47,7 +47,7 @@ export default function ManageUsers() {
     { title: "Doctor name", field: 'doctorname'},
     { title: "Client name", field: 'username'},
     { title: 'Note', field: 'note'},
-    { title: 'Status', field: 'status', lookup: { 0: 'Not examined yet', 1: 'Examined', 2: 'No comming' }},
+    { title: 'Status', field: 'status', lookup: { 0: 'Not examined yet', 1: 'Examined', 2: 'No comming', 3: 'Success' }},
   ]);
 
   const [data, setData] = useState([]);
